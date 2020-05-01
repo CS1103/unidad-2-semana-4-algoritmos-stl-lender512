@@ -39,22 +39,88 @@ void ejercicio299() {
 	}
 	int c= 0;
 	for (auto train : trains) {
-		vector<int>::iterator it;
-		do {
-			std::prev_permutation(train.begin(), train.end());
-			it = is_sorted_until(train.begin(), train.end());
-			c++;
-		} while (it != train.end());
-		cout << "Optimal train swapping takes " << c << " swaps. \n";
+		bool swap = false;
+		while (!swap) {
+			swap = true;
+			for (int i = 0; i < train.size() - 1; i++) {
+				if (train[i] > train[i + 1]) {
+					swap = false;
+					auto temp = train[i + 1];
+					train[i + 1] = train[i];
+					train[i] = temp;
+					c++;
+				}
+			}
+		}
+		cout << c <<" swaps needed \n";
 		c = 0;
 	} 
 }
-		
 
-void ejercico482() {
+template<typename T>
+void ordenar(vector<int> indices, vector<T> n) {
+	bool swap = false;
+	while (!swap) {
+		swap = true;
+		for (int i = 0; i < indices.size() - 1; i++) {
+			if (indices[i] > indices[i + 1]) {
+				swap = false;
+				auto temp1 = indices[i + 1];
+				indices[i + 1] = indices[i];
+				indices[i] = temp1;
+				auto temp2 = n[i + 1];
+				n[i + 1] = n[i];
+				n[i] = temp2;
+			}
+		}
+	}
+}
 
+void ejercicio482() {
+	int n;
+	cin >> n;
+
+	string str1;
+	string str2;
+
+	vector<vector<int>> indices(n);
+	vector<vector<string>> numeros(n);
+
+	for (int i = 0; i < n; i++) {
+		cin.ignore();
+		getline(cin, str1);
+		getline(cin, str2);
+		string str = "";
+		for (auto c: str1) {
+			if (c != ' ') {
+				str += c;
+			}
+			else if (c == ' ') {
+				indices[i].push_back(stoi(str));
+				str = "";
+			}
+		}
+		indices[i].push_back(stoi(str));
+		string temp = "";
+		for (auto c : str2) {
+			if (c != ' ') {
+				temp += c;
+			}
+			else if (c == ' '){
+				numeros[i].push_back(temp);
+				temp = "" ;
+			}
+		}
+		numeros[i].push_back(temp);
+		ordenar(indices[i], numeros[i]);
+		vector<string>::iterator it = numeros[i].end();
+		while (it != numeros[i].begin()) {
+			it--;
+			cout << *it << endl;
+		}
+	}
 }
 
 int main() {
-	ejercicio299();
+	ejercicio482();
 }
