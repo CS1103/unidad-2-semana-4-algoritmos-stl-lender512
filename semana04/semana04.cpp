@@ -121,6 +121,63 @@ void ejercicio482() {
 	}
 }
 
+int score(string s) {
+	int score = 0;
+	while (prev_permutation(s.begin(), s.end())) {
+		score++;
+	}
+	return score;
+}
+
+void ejercicio612() {
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cout << endl;
+		int size;
+		int cols;
+		cin >> size;
+		cin >> cols;
+		vector<string> vec(cols);
+		for (int j = 0; j < cols; j++) {
+			cin >> vec[j];
+		}
+		bool swap = false;
+		while (!swap) {
+			swap = true;
+			for (int i = 0; i < vec.size() - 1; i++) {
+				if (score(vec[i]) >= score(vec[i + 1])) {
+					swap = false;
+					auto temp = vec[i + 1];
+					vec[i + 1] = vec[i];
+					vec[i] = temp;
+				}
+			}
+		}
+		cout << "------------\n";
+		for (auto s : vec) cout << s << endl;
+	}
+	/* info para test case:
+	1
+
+	10 6
+	AACATGAAGG
+	TTTTGGCCAA
+	TTTGGCCAAA
+	GATCAGATTT
+	CCCGGGGGGA
+	ATCGATGCAT
+
+	output:
+	CCCGGGGGGA
+	AACATGAAGG
+	GATCAGATTT
+	ATCGATGCAT
+	TTTTGGCCAA
+	TTTGGCCAAA
+	*/
+}
+
 int main() {
-	ejercicio482();
+	ejercicio612();
 }
